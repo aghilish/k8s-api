@@ -18,9 +18,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+    
+      - name: Install Slidev
+        run: npm install @slidev/cli
 
       - name: Build Slidev
-        run: npm run build
+        run: slidev build slides.md
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
