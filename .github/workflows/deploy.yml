@@ -20,7 +20,7 @@ jobs:
         run: npm install
     
       - name: Install Slidev
-        run: npm install @slidev/cli
+        run: npm install -g @slidev/cli
 
       - name: Build Slidev
         run: slidev build slides.md
