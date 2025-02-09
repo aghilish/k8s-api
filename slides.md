@@ -1,7 +1,7 @@
 ---
 theme: seriph
 title: Kubernetes API Overview
-background: /k8s-api/assets/k8s-api-bg-1.jpg 
+background: /assets/k8s-api-bg-1.jpg 
 info: |
   ## Kubernetes API Deep Dive
   A presentation on Kubernetes API architecture, resources, and usage.
