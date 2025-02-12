@@ -25,7 +25,7 @@ Understand how Kubernetes API works and how to interact with it.
   </a>
 </div>
 <!-- 
-Welcome to the Kubernetes API Overview presentation. In this session, we will dive deep into the Kubernetes API architecture, resources, and usage.
+Welcome to the Kubernetes API Overview presentation. In this session, we will dive deep into the Kubernetes API architecture and learn how to interact with it.
 -->
 ---
 transition: fade-out
