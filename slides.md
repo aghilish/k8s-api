@@ -364,6 +364,7 @@ layout: center
 
 # Wanna Learn More?
 <Youtube id="azJsyLjvHsI" />
+[Killercoda Lab](https://killercoda.com/aghilish/scenario/extending_k8s)
 [API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) · [kubectl](https://kubernetes.io/docs/reference/kubectl/) · [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 
 <!-- Voice Over Script
