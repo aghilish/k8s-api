@@ -33,8 +33,9 @@ hideInToc: true
 ---
 
 # Agenda
-
+<div v-click>
 <Toc text-sm minDepth="1" maxDepth="1" />
+</div>
 <!-- Voice Over Script
 Here is the agenda for today's presentation. We will cover the Kubernetes API architecture, how to interact with the API, API groups and versions, and the Kubernetes object model.
 -->
@@ -70,6 +71,9 @@ Kubernetes API provides:
 * Authentication & Authorization mechanisms
 </div>
 
+::right::
+
+
 <div v-click>
 
 **Kubernetes API** is structured into:
@@ -84,7 +88,6 @@ Kubernetes API provides:
 
 * **Etcd** - Persistent storage for cluster state.
 </div>
-::right::
 
 <div v-click>
 
@@ -95,17 +98,18 @@ Kubernetes API provides:
 
 * **Controllers & Operators** - Watches for resource changes and reconcile the drift between actual and desired state.
 </div>
-
-
-
-<div v-click margin-top="70px">
+<!-- Voice Over Script
+The Kubernetes API is structured into several components. The API Server, also known as kube-apiserver, is the main entry point for requests. It handles all incoming API requests and validates them. The etcd component is the persistent storage for the cluster state. Admission Controllers validate and modify requests, while Controllers and Operators watch for resource changes and reconcile the drift between the actual and desired state.
+-->
+---
+layout: center
+---
+<div v-click>
 <br/>
 <br/>
   <img src="./assets/kubeapi-interaction.svg" alt="Kubernetes API Server" style="width: 100%;">
 </div>
-<!-- Voice Over Script
-The Kubernetes API is structured into several components. The API Server, also known as kube-apiserver, is the main entry point for requests. It handles all incoming API requests and validates them. The etcd component is the persistent storage for the cluster state. Admission Controllers validate and modify requests, while Controllers and Operators watch for resource changes and reconcile the drift between the actual and desired state.
--->
+<!-- Voice Over Script Let's walk through the sequence of events when a user creates a deployment using `kubectl`. 1. The user creates a deployment with `kubectl`. 2. The `kubectl` request is forwarded to the API server. 3. The request is then sent to the admission plugins. 4. Once the request is validated by the admission plugins, the deployment object is saved to the `etcd` database. 5. The deployment created event is prompted to the user. 6. The deployment controller watches for new deployment objects. 7. It detects the new deployment created. 8. The deployment controller initiates a ReplicaSet creation. 9. The ReplicaSet creation is communicated to the API server. 10. Similar to the deployment controller, the ReplicaSet controller creates the necessary resources, such as pods, and so on. This sequence ensures that the desired state specified by the user is achieved and maintained by Kubernetes. -->
 ---
 ---
 
