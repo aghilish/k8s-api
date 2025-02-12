@@ -24,7 +24,7 @@ Understand how Kubernetes API works and how to interact with it.
     <carbon:logo-linkedin />
   </a>
 </div>
-<!-- Voice Over Script
+<!-- 
 Welcome to the Kubernetes API Overview presentation. In this session, we will dive deep into the Kubernetes API architecture, resources, and usage.
 -->
 ---
@@ -36,7 +36,7 @@ hideInToc: true
 <div v-click>
 <Toc text-sm minDepth="1" maxDepth="1" />
 </div>
-<!-- Voice Over Script
+<!-- 
 Here is the agenda for today's presentation. We will cover the Kubernetes API architecture, how to interact with the API, API groups and versions, and the Kubernetes object model.
 -->
 ---
@@ -98,7 +98,7 @@ Kubernetes API provides:
 
 * **Controllers & Operators** - Watches for resource changes and reconcile the drift between actual and desired state.
 </div>
-<!-- Voice Over Script
+<!-- 
 The Kubernetes API is structured into several components. The API Server, also known as kube-apiserver, is the main entry point for requests. It handles all incoming API requests and validates them. The etcd component is the persistent storage for the cluster state. Admission Controllers validate and modify requests, while Controllers and Operators watch for resource changes and reconcile the drift between the actual and desired state.
 -->
 ---
@@ -109,7 +109,7 @@ layout: center
 <br/>
   <img src="./assets/kubeapi-interaction.svg" alt="Kubernetes API Server" style="width: 100%;">
 </div>
-<!-- Voice Over Script Let's walk through the sequence of events when a user creates a deployment using `kubectl`. 1. The user creates a deployment with `kubectl`. 2. The `kubectl` request is forwarded to the API server. 3. The request is then sent to the admission plugins. 4. Once the request is validated by the admission plugins, the deployment object is saved to the `etcd` database. 5. The deployment created event is prompted to the user. 6. The deployment controller watches for new deployment objects. 7. It detects the new deployment created. 8. The deployment controller initiates a ReplicaSet creation. 9. The ReplicaSet creation is communicated to the API server. 10. Similar to the deployment controller, the ReplicaSet controller creates the necessary resources, such as pods, and so on. This sequence ensures that the desired state specified by the user is achieved and maintained by Kubernetes. -->
+<!--  Let's walk through the sequence of events when a user creates a deployment using `kubectl`. 1. The user creates a deployment with `kubectl`. 2. The `kubectl` request is forwarded to the API server. 3. The request is then sent to the admission plugins. 4. Once the request is validated by the admission plugins, the deployment object is saved to the `etcd` database. 5. The deployment created event is prompted to the user. 6. The deployment controller watches for new deployment objects. 7. It detects the new deployment created. 8. The deployment controller initiates a ReplicaSet creation. 9. The ReplicaSet creation is communicated to the API server. 10. Similar to the deployment controller, the ReplicaSet controller creates the necessary resources, such as pods, and so on. This sequence ensures that the desired state specified by the user is achieved and maintained by Kubernetes. -->
 ---
 ---
 
@@ -154,7 +154,7 @@ curl -X GET "https://k8s-api-server/api/v1/nodes" -H "Authorization: Bearer TOKE
 ```
 </div>
 
-<!-- Voice Over Script
+<!-- 
 
 You can interact with the Kubernetes API using several methods:
 
@@ -227,7 +227,7 @@ This command retrieves information about the nodes in your cluster.
    <code>no namespace in the path!</code>
   </div>
 
-<!-- Voice Over Script
+<!-- 
 The Kubernetes API is organized into groups and versions to manage the various resources within a cluster.
 
 First, we have the Core group. This includes essential resources such as Nodes, Pods, Namespaces, Services, ConfigMaps, and Secrets. These resources are accessed via the api/v1/ endpoint. For example, to access secrets within a namespace, you would use the path api/v1/namespaces/{namespace}/secrets.
@@ -281,7 +281,7 @@ pods                                po           v1                             
 ```
 </div>
 
-<!-- Voice Over Script
+<!-- 
 Here is an example of a resource definition in YAML format. The apiVersion field specifies the group and version of the resource, while the kind field defines the concrete representation or schema of the resource type. In this case, it is a Deployment.
 
 The Resource Type is the name used in the REST path. For example, the path to access deployments within a namespace would be apis/apps/v1/namespaces/{namespace}/deployments.
@@ -319,7 +319,7 @@ hideInToc: true
 
   <img src="./assets/k8s-object.svg" alt="Kubernetes Object Model" style="width: 10![alt text](image.png)0%;">
 </div>
-<!-- Voice Over Script
+<!-- 
 Every Kubernetes object must have several key fields. The TypeMeta field defines the object's API version and kind. The ObjectMeta field contains identifiers such as name, namespace, uid, and resourceVersion. It also includes timestamps for creation and deletion, as well as labels and annotations for organization and categorization. The spec field represents the desired state of the object, while the status field summarizes the current state of the object in the system.
 -->
 ---
@@ -355,7 +355,7 @@ status:  # A nested object field called status summarizes the current state of t
   podIP: 192.168.1.2
   startTime: "2025-02-09T12:01:00Z"
 ```
-<!-- Voice Over Script
+<!-- 
 Here is an example of a Kubernetes object in YAML format. The apiVersion field specifies the API version, and the kind field defines the type of the resource, in this case, a Pod. The metadata field contains identifiers such as namespace, name, uid, resourceVersion, creationTimestamp, deletionTimestamp, labels, and annotations. The spec field represents the desired state of the object, including the containers, their images, ports, and restart policy. The status field summarizes the current state of the object, including the phase, conditions, host IP, pod IP, and start time.
 -->
 ---
@@ -366,6 +366,6 @@ layout: center
 <Youtube id="azJsyLjvHsI" />
 [Killercoda Lab](https://killercoda.com/aghilish/scenario/extending_k8s) . [API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) . [kubectl](https://kubernetes.io/docs/reference/kubectl/)
 
-<!-- Voice Over Script
+<!-- 
 Thank you for attending this presentation on Kubernetes API. If you want to learn more, you can watch the video linked here or visit the Kubernetes documentation for more information on the API reference, kubectl, and RBAC.
 -->
