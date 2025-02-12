@@ -364,8 +364,7 @@ layout: center
 
 # Wanna Learn More?
 <Youtube id="azJsyLjvHsI" />
-[Killercoda Lab](https://killercoda.com/aghilish/scenario/extending_k8s)
-[API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) · [kubectl](https://kubernetes.io/docs/reference/kubectl/) · [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+[Killercoda Lab](https://killercoda.com/aghilish/scenario/extending_k8s) . [API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) . [kubectl](https://kubernetes.io/docs/reference/kubectl/)
 
 <!-- Voice Over Script
 Thank you for attending this presentation on Kubernetes API. If you want to learn more, you can watch the video linked here or visit the Kubernetes documentation for more information on the API reference, kubectl, and RBAC.
