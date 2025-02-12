@@ -4,7 +4,7 @@ title: Kubernetes API Overview
 background: /assets/k8s-api-bg-1.jpg 
 info: |
   ## Kubernetes API Deep Dive
-  A presentation on Kubernetes API architecture, resources, and usage.
+  A presentation on Kubernetes API architecture and learn how to interact with it.
 
   Learn more at [Kubernetes Docs](https://kubernetes.io/docs/reference/kubernetes-api/)
 class: text-center
@@ -99,7 +99,7 @@ Kubernetes API provides:
 * **Controllers & Operators** - Watches for resource changes and reconcile the drift between actual and desired state.
 </div>
 <!-- 
-The Kubernetes API is structured into several components. The API Server, also known as kube-apiserver, is the main entry point for requests. It handles all incoming API requests and validates them. The etcd component is the persistent storage for the cluster state. Admission Controllers validate and modify requests, while Controllers and Operators watch for resource changes and reconcile the drift between the actual and desired state.
+The Kubernetes API is the core mechanism for interacting with a Kubernetes cluster. It provides several key functionalities: 1. Declarative configuration of resources. 2. Communication between components. 3. RESTful interface for automation. 4. Authentication and Authorization mechanisms. The Kubernetes API is structured into several components: 1. **API Server (`kube-apiserver`)** - This is the main entry point for requests. 2. **Etcd** - This component serves as the persistent storage for the cluster state. 3. **Admission Controllers** - These validate and modify requests. 4. **Controllers & Operators** - These watch for resource changes and reconcile the drift between the actual and desired state. Understanding these components is crucial for effectively managing and interacting with a Kubernetes cluster.
 -->
 ---
 layout: center
@@ -367,5 +367,5 @@ layout: center
 [Killercoda Lab](https://killercoda.com/aghilish/scenario/extending_k8s) . [API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) . [kubectl](https://kubernetes.io/docs/reference/kubectl/)
 
 <!-- 
-Thank you for attending this presentation on Kubernetes API. If you want to learn more, you can watch the video linked here or visit the Kubernetes documentation for more information on the API reference, kubectl, and RBAC.
+Thank you for attending this presentation on Kubernetes API. If you want to learn more, you can watch the video linked here or follow the Killercoda hands-on lab I have linked here. You can also visit the Kubernetes documentation for more information on the API reference and kubectl.
 -->
