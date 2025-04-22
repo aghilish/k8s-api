@@ -1,13 +1,12 @@
 ---
+transition: slide-left
 layout: two-cols
-transition: slide-up
 ---
+
 # Extending the Kubernetes API
 
 <div v-click>
-
-Kubernetes API is designed to **evolve** and **grow** with new use cases.
-
+Kubernetes API is designed to evolve with new use cases.
 </div>
 
 <div v-click>
@@ -17,74 +16,104 @@ Two primary methods to extend it:
 </div>
 
 <div v-click>
-
-1. **CustomResourceDefinition (CRD)**  
-   - Declaratively define new custom APIs.  
-   - No need for a custom API server.
+ 
+ **CustomResourceDefinition (CRD)** - Declaratively define new custom APIs.
 
 </div>
 
 <div v-click>
 
-2. **Aggregation Layer**  
-   - Proxy-based extension with a custom API server.  
-   - For specialized implementations.
-
+**API Aggregation (AA)** - Deploy custom API servers for specialized implementations.
 </div>
 
 ::right::
 
 <div v-click>
+<br/>
 
-<p style="text-align: center;">
-  <img src="./assets/k8s-extension-api.png" alt="API Extension">
-</p>
 
+**CRD**:
 </div>
 
+<div v-click>
+
+- Define API group, kind, and schema.
+</div>
+
+<div v-click>
+
+- Creates RESTful resource paths automatically.
+</div>
+
+<div v-click>
+
+**AA**:
+</div>
+
+<div v-click>
+
+- Main API server proxies requests to your custom API server.
+</div>
+
+<div v-click>
+  <br/>
+  <br/>
+  <img src="./assets/k8s-aa.svg" alt="Kubernetes API Aggregation" style="width: 100%;">
+</div>
 <!-- 
-As Kubernetes adapts to new and changing use cases, its API must evolve. This slide introduces the two main ways to extend the Kubernetes API: CustomResourceDefinition (CRD) for declarative resource creation without a custom server, and the Aggregation Layer for more complex, custom server-based extensions. The diagram illustrates how these extensions integrate with the Kubernetes API.
+Let us explore how to extend the Kubernetes API to support new use cases. Kubernetes is built to grow, and its API can be extended in two main ways: CustomResourceDefinitions, or CRDs, allow you to declaratively define new custom APIs with your own API group, kind, and schema. This creates new RESTful resource paths without needing a custom API server. Alternatively, API Aggregation, or AA, lets you deploy your own API server for specialized implementations, with the main API server acting as a proxy to forward requests to your custom server. The diagram illustrates how API Aggregation works, showing the main API server proxying requests to a custom API server. 
+  1. A request to `/apis/mygroup`.
+  2. The kube-aggregator, embedded in the kube-apiserver, forwards the request.
+  3. The extension API server, registered for `/apis/mygroup/*` and typically running as a pod, handles the request.
+  4. The extension API server manages etcd storage if needed.
 -->
 
 ---
-transition: slide-up
+transition: slide-left
 layout: two-cols
+hideInToc: false
 ---
 
-# CustomResourceDefinition (CRD)
+# Choosing CRD or API Aggregation
 
 <div v-click>
 
-**CRDs** allow you to:
-
+**CustomResourceDefinition (CRD)**:
 </div>
 
 <div v-click>
 
-- Define new resource types with custom:  
-  - API group  
-  - Kind  
-  - Schema
-
+- Ideal for most use cases.
 </div>
 
 <div v-click>
 
-- Extend Kubernetes without a custom API server.
-
+- No need for a custom API server.
 </div>
 
 <div v-click>
 
-- Create RESTful resource paths automatically.
-
+- Simple to define and manage.
 </div>
 
+<div v-click>
+
+**API Aggregation (AA)**:
+</div>
+
+<div v-click>
+
+- Use when custom validations or existing API servers are needed.
+</div>
+
+<div v-click>
+
+- Register via APIService to claim a URL path.
+</div>
 ::right::
-
 <div v-click>
 
-Example CRD:
+Example CRD creation:
 
 ```yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -96,22 +125,10 @@ spec:
   names:
     kind: MyResource
     plural: myresources
-  versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object
-            properties:
-              replicas:
-                type: integer
-```
+  scope: Namespaced
+```  
 </div>
 <!-- 
-CustomResourceDefinitions (CRDs) are a powerful way to extend Kubernetes by defining new resource types declaratively. You specify the API group, kind, and schema, and Kubernetes generates RESTful endpoints for them. No custom server is needed! On the right, we see a sample CRD for a resource called "MyResource" in the "example.com" group, with a simple schema including a "replicas" field. In this section, we’ll dive deep into the creation and management of Custom Resource Definitions in Kubernetes.
+When deciding how to extend the Kubernetes API, you’ll choose between CRDs and API Aggregation. CRDs are the go-to choice for most scenarios because they’re simple to define, manage, and don’t require running a custom API server. They’re perfect for adding new resource types to your cluster. On the other hand, API Aggregation is better when you need custom validations or already have a program serving your API. You register an extension API server with an APIService to claim a URL path, and the kube-aggregator forwards requests to it. Here’s an example of a CRD definition, where we create a new resource type called MyResource in the example.com API group.
 -->
 
