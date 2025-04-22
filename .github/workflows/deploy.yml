@@ -9,21 +9,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
-    
-      - name: Install Slidev
-        run: npm install -g @slidev/cli
 
       - name: Build Slidev
-        run: slidev build --base /k8s-api/ slides.md
+        run: npx slidev build --base /k8s-api/ slides.md
     
       - name: Copy assets to dist
         run: cp -r ./assets/* ./dist/assets/
