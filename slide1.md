@@ -316,3 +316,115 @@ The second file, mykind_types.go, is where your CRD’s schema lives. Inside it,
 
 Together, these files form the core of how your CRD behaves and is understood by Kubernetes.
 -->
+
+---
+transition: slide-left
+---
+
+# Defining Spec and Status in a CRD
+
+<div v-click>
+Once you've scaffolded the CRD, you're ready to customize its behavior.
+</div>
+
+<div v-click>
+Define the `MyKindSpec` and `MyKindStatus` structs inside `mykind_types.go`.
+</div>
+
+<div v-click>
+Once defined, run:
+
+```bash
+make manifests
+```
+
+This will generate the CRD YAML file.
+</div>
+
+<div v-click>
+That file will typically appear in:
+</div>
+
+<div v-click>
+
+```
+config/crd/bases/<group>_<resource>.yaml
+```
+
+</div>
+
+<!-- 
+Now that the CRD scaffolding is ready, it's time to define what the resource actually manages. You do this by filling out the `MyKindSpec` and `MyKindStatus` structs in the `mykind_types.go` file. These structs describe the desired and observed state of your custom resource. Once you're done, run `make manifests`, and Kubebuilder will generate the CRD YAML under the config directory. This is what Kubernetes will use to register your resource.
+-->
+
+---
+
+# Making Custom Resources Work with client-go
+
+<div v-click>
+
+To interact with CRDs using client-go, your types must implement the `runtime.Object` interface.
+</div>
+
+<div v-click>
+This interface ensures the object can be serialized/deserialized for API server communication.
+</div>
+
+<div v-click>
+
+One key part of this is the ability to create deep copies of the object.
+</div>
+
+<div v-click>
+
+This is handled automatically using a Kubebuilder marker:
+</div>
+
+<div v-click>
+
+```go
+// +kubebuilder:object:root=true
+```
+</div>
+
+<!-- 
+Kubernetes' client-go library expects your CRDs to implement the `runtime.Object` interface. This interface ensures that your objects can be safely encoded, decoded, and copied. Rather than writing that logic yourself, you can use the `+kubebuilder:object:root=true` marker. It signals Kubebuilder to generate those methods for you, including the important DeepCopy function.
+-->
+
+---
+
+# Choosing Resource Scope
+
+<div v-click>
+
+Another important decision is the scope of your CRD.
+</div>
+
+<div v-click>
+
+If the resource should apply across the whole cluster, use:
+</div>
+
+<div v-click>
+
+```go
+// +kubebuilder:resource:path=cleaners,scope=Cluster
+```
+
+</div>
+
+<div v-click>
+
+If it should apply only within a namespace, use:
+</div>
+
+<div v-click>
+
+```go
+// +kubebuilder:resource:path=cleaners,scope=Namespaced
+```
+</div>
+
+<!-- 
+When designing your CRD, consider who will use it and how. If it's meant for cluster-wide use—say by platform admins—define it with a Cluster scope. This way, a single resource can manage settings across all namespaces. On the other hand, if it's meant to be namespace-specific—perhaps for individual teams—use a Namespaced scope. Kubebuilder lets you declare this with a simple marker comment.
+-->
