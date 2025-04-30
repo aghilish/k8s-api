@@ -428,3 +428,110 @@ If it should apply only within a namespace, use:
 <!-- 
 When designing your CRD, consider who will use it and how. If it's meant for cluster-wide use—say by platform admins—define it with a Cluster scope. This way, a single resource can manage settings across all namespaces. On the other hand, if it's meant to be namespace-specific—perhaps for individual teams—use a Namespaced scope. Kubebuilder lets you declare this with a simple marker comment.
 -->
+
+---
+transition: slide-left
+---
+
+# Designing the CRD Spec
+
+<div v-click>
+
+The `Spec` field defines the **desired state** of your custom resource.
+</div>
+
+<div v-click>
+
+It exposes all user-configurable options and defaults.
+</div>
+
+<div v-click>
+
+Let’s look at the CronJob example to understand Spec design in practice.
+</div>
+
+<!--
+The `Spec` field in your CRD defines what the user can configure—this is the desired state. A well-designed Spec provides flexibility while offering safe defaults. 
+Let’s look at the CronJob example to understand Spec design in practice.
+-->
+---
+transition: slide-left
+---
+
+# Designing the CRD Spec
+
+<div v-click>
+
+In the CronJob CRD, users can configure several behaviors:
+</div>
+
+<div v-click>
+
+1. When to run jobs (`schedule`)
+</div>
+<div v-click>
+
+2. Retention settings (`successfulJobsHistoryLimit`, `failedJobsHistoryLimit`)
+</div>
+
+<div v-click>
+
+3. Concurrency policy and suspend flag
+</div>
+
+<div v-click>
+```go
+type CronJobSpec struct {
+    Schedule                   string `json:"schedule"`
+    ConcurrencyPolicy          string `json:"concurrencyPolicy,omitempty"`
+    Suspend                    *bool  `json:"suspend,omitempty"`
+    SuccessfulJobsHistoryLimit *int32 `json:"successfulJobsHistoryLimit,omitempty"`
+    FailedJobsHistoryLimit     *int32 `json:"failedJobsHistoryLimit,omitempty"`
+}
+```
+</div>
+<!--
+Taking the CronJob example from Kubebuilder, you expose a schedule field that determines when the job should run. You also allow the user to control how many successful or failed jobs are retained, whether the job is suspended, and how concurrent jobs are managed.
+-->
+---
+transition: slide-left
+---
+
+# Optional Fields and Defaults
+
+<div v-click>
+
+Some fields can be **optional**, with sensible **default values**.
+</div>
+
+<div v-click>
+This allows your CRD to be user-friendly and flexible.
+</div>
+
+<div v-click>
+
+To set a default value:
+</div>
+
+<div v-click>
+```go
+// +kubebuilder:default:=true
+Suspend *bool `json:"suspend,omitempty"`
+```
+
+</div>
+<div v-click>
+
+To make a field optional:
+</div>
+
+<div v-click>
+```go
+// +optional
+ConcurrencyPolicy string `json:"concurrencyPolicy,omitempty"`
+```
+</div>
+<!--
+You can make fields optional by using the `+optional` marker, and provide default values using the `+kubebuilder:default` marker. For instance, you might want jobs to be suspended by default, or allow concurrency policies to be defined only when needed.
+This approach ensures your API is expressive and ergonomic.
+-->
