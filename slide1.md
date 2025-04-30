@@ -531,6 +531,11 @@ To make a field optional:
 ConcurrencyPolicy string `json:"concurrencyPolicy,omitempty"`
 ```
 </div>
+
+<div v-click>
+
+Here's the full list of [validation markers](https://book.kubebuilder.io/reference/markers/crd-validation.html?highlight=%2F%2F%20%2Bkubebuilder%3Avalidation%3AEnum#crd-validation).
+</div>
 <!--
 You can make fields optional by using the `+optional` marker, and provide default values using the `+kubebuilder:default` marker. For instance, you might want jobs to be suspended by default, or allow concurrency policies to be defined only when needed.
 This approach ensures your API is expressive and ergonomic.
