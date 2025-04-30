@@ -196,24 +196,27 @@ kubebuilder create api --group app --version v1alpha1 --kind MyKind
 </div>
 
 <div v-click>
+
 - Group is a namespace for related APIs.
 </div>
 
 <div v-click>
+
 - Version defines API maturity (alpha, beta).
 </div>
 
 <div v-click>
+
 - Kind is the type of object you want to manage.
 </div>
 
 <div v-click>
+
 Generated structure includes:
 </div>
 
 <div v-click>
-
-  ```bash
+```bash
   $ ~/my-operator$ tree api/
   api/
   `-- v1alpha1
@@ -230,7 +233,6 @@ Once the project is initialized, we can generate our custom API with group, vers
 
 ---
 transition: slide-left
-layout: center
 ---
 
 # Marker Comments and Automation
@@ -251,4 +253,66 @@ Marker comments like `+kubebuilder:validation:Minimum=1` define schema validatio
 
 <!-- 
 Kubebuilder uses Go comments called marker comments to automate CRD generation. These comments are interpreted by the controller-gen tool to define schemas and validations, reducing manual YAML and error.
+-->
+
+---
+---
+# Kubebuilder Key Files
+
+<div v-click>
+Kubebuilder organizes code into logical files for each custom resource.
+</div>
+
+<div v-click>
+Two files are particularly important:
+</div>
+
+<div v-click>
+<code>groupversion_info.go</code> – defines API group and version.
+</div>
+
+<div v-click>
+
+  ```go {all} twoslash
+  GroupVersion = schema.GroupVersion { 
+    Group: "app.mycoolcompany.io", Version: "v1alpha1"
+  }
+  ```
+</div>
+
+<div v-click>
+This sets the unique identifier for your CRD.
+</div>
+
+
+<div v-click>
+
+<code>mykind_types.go</code> – defines the structure and schema of your CRD.
+</div>
+
+
+
+<div v-click>
+
+
+```go twoslash
+type MyKindSpec struct {
+  Foo string `json:"foo,omitempty"`
+}
+
+type MyKind struct {
+  metav1.TypeMeta
+  metav1.ObjectMeta
+  Spec MyKindSpec
+  Status MyKindStatus
+}
+```
+</div>
+
+<!-- 
+Kubebuilder organizes your project in a predictable way. Two key files help define your custom resource. First is groupversion_info.go. This file sets the API group and version using the GroupVersion variable. For example, "app.projectsveltos.io" and "v1alpha1". This uniquely identifies your CRD.
+
+The second file, mykind_types.go, is where your CRD’s schema lives. Inside it, you define Spec and Status structs that describe the desired and observed state of your resource. For example, Spec might contain a field named Foo. You also annotate the CRD with kubebuilder markers to auto-generate code and OpenAPI schemas. 
+
+Together, these files form the core of how your CRD behaves and is understood by Kubernetes.
 -->
