@@ -132,3 +132,123 @@ spec:
 When deciding how to extend the Kubernetes API, you’ll choose between CRDs and API Aggregation. CRDs are the go-to choice for most scenarios because they’re simple to define, manage, and don’t require running a custom API server. They’re perfect for adding new resource types to your cluster. On the other hand, API Aggregation is better when you need custom validations or already have a program serving your API. You register an extension API server with an APIService to claim a URL path, and the kube-aggregator forwards requests to it. Here’s an example of a CRD definition, where we create a new resource type called MyResource in the example.com API group.
 -->
 
+---
+transition: slide-left
+---
+
+# Kubebuilder Overview
+
+<div v-click>
+Kubebuilder is a framework from Kubernetes SIGs to build APIs using Custom Resource Definitions (CRDs).
+</div>
+
+<div v-click>
+It scaffolds boilerplate code and structure to help build Kubernetes-native APIs.
+</div>
+
+<div v-click>
+Install with Homebrew:
+</div>
+
+<div v-click>
+
+```bash
+brew install kubebuilder
+```
+</div>
+
+<div v-click>
+Initialize a project:
+
+```bash
+  mkdir my-operator
+  cd my-operator
+  kubebuilder init --domain mycoolcompany.io --repo github.com/my-operator
+```
+</div>
+
+
+<!-- 
+Kubebuilder is the official way to scaffold new Kubernetes APIs. It generates all necessary files and structure, so you can focus on logic. We start by installing it using Homebrew. Then, we initialize a project with our domain name, which helps define our API group.
+-->
+
+
+---
+transition: slide-left
+---
+
+# Creating Your API
+
+<div v-click>
+
+Create a new API with `kubebuilder create api` .
+</div>
+
+<div v-click>
+Define Group, Version, and Kind:
+</div>
+
+<div v-click>
+
+```bash
+kubebuilder create api --group app --version v1alpha1 --kind MyKind
+```
+</div>
+
+<div v-click>
+- Group is a namespace for related APIs.
+</div>
+
+<div v-click>
+- Version defines API maturity (alpha, beta).
+</div>
+
+<div v-click>
+- Kind is the type of object you want to manage.
+</div>
+
+<div v-click>
+Generated structure includes:
+</div>
+
+<div v-click>
+
+  ```bash
+  $ ~/my-operator$ tree api/
+  api/
+  `-- v1alpha1
+      |-- groupversion_info.go
+      `-- mykind_types.go
+
+  2 directories, 2 files
+```
+</div>
+
+<!-- 
+Once the project is initialized, we can generate our custom API with group, version, and kind. These define how Kubernetes will organize and recognize your resource. The directory structure generated includes boilerplate files, controller logic, and API definitions.
+-->
+
+---
+transition: slide-left
+layout: center
+---
+
+# Marker Comments and Automation
+
+<div v-click>
+Kubebuilder relies on special Go comments called markers to generate OpenAPI schemas and CRDs.
+</div>
+
+<div v-click>
+
+The tool behind this is `controller-gen`.
+</div>
+
+<div v-click>
+
+Marker comments like `+kubebuilder:validation:Minimum=1` define schema validation rules.
+</div>
+
+<!-- 
+Kubebuilder uses Go comments called marker comments to automate CRD generation. These comments are interpreted by the controller-gen tool to define schemas and validations, reducing manual YAML and error.
+-->
