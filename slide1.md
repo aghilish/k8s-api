@@ -256,19 +256,25 @@ Kubebuilder uses Go comments called marker comments to automate CRD generation. 
 -->
 
 ---
----
+
 # Kubebuilder Key Files
 
 <div v-click>
+
 Kubebuilder organizes code into logical files for each custom resource.
 </div>
 
 <div v-click>
+
 Two files are particularly important:
 </div>
 
 <div v-click>
-<code>groupversion_info.go</code> – defines API group and version.
+
+<code>
+groupversion_info.go
+</code> – defines API group and version.
+
 </div>
 
 <div v-click>
@@ -318,8 +324,6 @@ Together, these files form the core of how your CRD behaves and is understood by
 -->
 
 ---
-transition: slide-left
----
 
 # Defining Spec and Status in a CRD
 
@@ -328,15 +332,21 @@ Once you've scaffolded the CRD, you're ready to customize its behavior.
 </div>
 
 <div v-click>
-Define the `MyKindSpec` and `MyKindStatus` structs inside `mykind_types.go`.
+
+  Define the `MyKindSpec` and `MyKindStatus` structs inside `mykind_types.go`.
 </div>
 
 <div v-click>
 Once defined, run:
+</div>
 
+<div v-click>
 ```bash
 make manifests
 ```
+</div>
+
+<div v-click>
 
 This will generate the CRD YAML file.
 </div>
@@ -347,10 +357,9 @@ That file will typically appear in:
 
 <div v-click>
 
-```
+```bash
 config/crd/bases/<group>_<resource>.yaml
 ```
-
 </div>
 
 <!-- 
