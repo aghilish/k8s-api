@@ -447,18 +447,8 @@ It exposes all user-configurable options and defaults.
 
 <div v-click>
 
-Let’s look at the CronJob example to understand Spec design in practice.
+Let’s look at the [CronJob example](https://book.kubebuilder.io/cronjob-tutorial/api-design) from the kubebuilder book to understand Spec design in practice.
 </div>
-
-<!--
-The `Spec` field in your CRD defines what the user can configure—this is the desired state. A well-designed Spec provides flexibility while offering safe defaults. 
-Let’s look at the CronJob example to understand Spec design in practice.
--->
----
-transition: slide-left
----
-
-# Designing the CRD Spec
 
 <div v-click>
 
@@ -491,7 +481,8 @@ type CronJobSpec struct {
 ```
 </div>
 <!--
-Taking the CronJob example from Kubebuilder, you expose a schedule field that determines when the job should run. You also allow the user to control how many successful or failed jobs are retained, whether the job is suspended, and how concurrent jobs are managed.
+The `Spec` field in your CRD defines what the user can configure—this is the desired state. A well-designed Spec provides flexibility while offering safe defaults. 
+Let’s look at the CronJob example to understand Spec design in practice. Taking the CronJob example from Kubebuilder, you expose a schedule field that determines when the job should run. You also allow the user to control how many successful or failed jobs are retained, whether the job is suspended, and how concurrent jobs are managed.
 -->
 ---
 transition: slide-left
@@ -539,4 +530,160 @@ Here's the full list of [validation markers](https://book.kubebuilder.io/referen
 <!--
 You can make fields optional by using the `+optional` marker, and provide default values using the `+kubebuilder:default` marker. For instance, you might want jobs to be suspended by default, or allow concurrency policies to be defined only when needed.
 This approach ensures your API is expressive and ergonomic.
+-->
+---
+transition: slide-left
+---
+
+# Understanding the Status Subresource in a CRD
+
+<div v-click>
+
+Kubernetes allows resources to expose a separate endpoint just for their status.
+</div>
+
+<div v-click>
+
+This is enabled using a special marker:
+</div>
+
+<div v-click>
+
+<code>// +kubebuilder:subresource:status</code>
+</div>
+
+<!--
+When defining a Kubernetes Custom Resource, you can add a status subresource to separate your resource's configuration from its current state. This makes it easier to monitor and manage changes independently and securely.
+-->
+
+---
+transition: slide-left
+layout: two-cols
+---
+
+# Why Use a Status Subresource?
+
+<div v-click>
+
+It allows the controller to report observed state independently.
+</div>
+
+<div v-click>
+
+Main spec updates don't overwrite status data, and vice versa.
+</div>
+
+<div v-click>
+
+You can apply RBAC to status separately from spec.
+</div>
+
+::right::
+
+<div v-click>
+
+The <strong>Spec</strong> defines the desired state of the resource.
+</div>
+
+<div v-click>
+
+The <strong>Status</strong> reflects the observed state from the controller.
+</div>
+
+<div v-click>
+
+Example: In a Cluster wide resource, the admin defines Spec.
+</div>
+
+<div v-click>
+
+The controller updates Status to show run history and results.
+</div>
+
+<!--
+The status subresource provides a clean separation between user intent and system observation. You can grant different RBAC permissions for reading or updating the status, making it secure and modular. Updates to spec and status don’t interfere with each other, preventing accidental overwrites. In designing a CRD, you should always ask: who defines the Spec, and who updates the Status? For example, in a Cluster wide resource, platform admins define when and how Operation should occur using Spec. The controller then fills in the Status with last run time, success or failure messages.
+-->
+
+---
+transition: slide-left
+---
+
+# CronJobStatus Structure
+<div v-click>
+
+Looking at the [CronJob example](https://book.kubebuilder.io/cronjob-tutorial/api-design) from the kubebuilder book, we see how to define the Status struct.
+</div>
+<div v-click>
+
+Define fields you want the controller to expose:
+</div>
+
+<div v-click>
+
+- Active jobs (list of job references)
+</div>
+
+<div v-click>
+
+- Last successful schedule time
+</div>
+
+<div v-click>
+
+```go
+type CronJobStatus struct {
+  Active []corev1.ObjectReference `json:"active,omitempty"`
+  LastScheduleTime *metav1.Time   `json:"lastScheduleTime,omitempty"`
+}
+```
+</div>
+
+<!--
+In the CronJob example from the kubebuiler book, the Status struct includes two important fields. First, the 'Active' field lists all jobs currently running. Second, 'LastScheduleTime' tells us the last time the job was successfully triggered. This gives platform admins real-time visibility into job execution.
+-->
+
+---
+transition: slide-left
+---
+
+# Marking the Status Subresource
+
+<div v-click>
+Use this marker in the root CRD struct:
+</div>
+
+<div v-click>
+
+<code>// +kubebuilder:subresource:status</code>
+
+</div>
+
+<div v-click>
+
+This tells Kubernetes to treat status as a distinct subresource.
+</div>
+
+<div v-click>
+
+
+#### Full Root Object Example
+
+</div>
+
+<div v-click>
+
+```go
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+type CronJob struct {
+  metav1.TypeMeta   `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
+  Spec   CronJobSpec   `json:"spec,omitempty"`
+  Status CronJobStatus `json:"status,omitempty"`
+}
+```
+</div>
+
+<!--
+To enable the status subresource, simply add the kubebuilder marker at the top of your CRD definition. This ensures Kubernetes will treat 'status' as a separate endpoint, letting you manage it independently from the main resource configuration. This is the full root object definition for a CronJob resource, complete with the status subresource enabled. Notice the two kubebuilder markers at the top — one indicates it’s a root object, and the other enables the status subresource. With these in place, Kubernetes knows how to handle your resource in a fully native way.
 -->
