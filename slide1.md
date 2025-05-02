@@ -783,3 +783,159 @@ status:
 <!--
 This YAML output shows that the CRD was successfully validated and established. The status field confirms that there were no conflicts and that the names were accepted.
 -->
+
+---
+title: Common Expression Language (CEL)
+---
+
+# Common Expression Language (CEL)
+
+<!--
+Let us now introduce the Common Expression Language, or CEL.
+It's a powerful feature that lets you write validation rules directly inside your Kubernetes CustomResourceDefinitions.
+Since Kubernetes v1.25, CEL support is available in beta and lets you express constraints clearly and declaratively.
+Marker `//+kubebuilder:validation:XValidation:rule` can be used for this scope.
+-->
+
+<div v-click>
+
+For ensuring your CRD configurations are well-defined, you can leverage marker comments with `Common Expression Language` (`CEL`). Since Kubernetes v1.25 introduced CEL support for validation in beta, you can now write expressions to validate your custom resources.
+
+Marker `//+kubebuilder:validation:XValidation:rule` can be used for this scope.
+
+</div>
+
+---
+
+## Immutability
+
+<!--
+Here is an example on how to make a field immutable using CEL.
+The validation rule ensures the value of 'Schedule' doesn't change after creation.
+If it does, the update is rejected with a clear error message.
+self refers to the current object, while oldSelf refers to the previous version.
+-->
+
+<div v-click>
+
+```yaml
+//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
+Schedule string `json:"schedule"`
+```
+
+If I tried to update my instance changing the _schedule_ field, the update would fail:
+
+```bash
+spec.schedule: Invalid value: "string": Value is immutable
+```
+
+</div>
+
+---
+
+## Append-only list
+
+<!--
+Here we can define a sample Selectors list that can only grow.
+The rule checks that the new list size is not smaller than the old one, enforcing append-only behavior.
+-->
+
+
+<div v-click>
+```yaml
+//+kubebuilder:validation:XValidation:rule="size(self) >= size(oldSelf)",message="this list is append only"
+Selectors []Selector `json:"selectors"`
+```
+
+Any update reducing that list would fail:
+
+```bash
+spec.selectors: Invalid value: "array": this list is append only
+```
+</div>
+
+---
+
+## Name format validation
+
+<!--
+Let us look at a simple example of validating the name format using CEL rules.
+The rule enforces that resource names must start with a specific prefix.
+-->
+
+<div v-click>
+
+```yaml
+type MyKind struct { //+kubebuilder:validation:XValidation:rule=self.metadata.name.startsWith("my-prefix")
+```
+
+Creating an incorrect instance fails:
+
+```bash
+<nil>: Invalid value: "object": failed rule: self.metadata.name.startsWith("my-prefix")
+```
+
+</div>
+---
+
+## Pattern-based string validation
+
+<!--
+You can also validate field content using regex patterns.
+This rule ensures that the 'description' field follows a naming convention: starts with a letter or underscore and only includes valid characters.
+-->
+<div v-click>
+
+```yaml
+// +kubebuilder:validation:Pattern=`^[A-Za-z_][A-Za-z0-9_]*$`
+Description string `json:"description"`
+```
+
+This ensures `description` starts with a letter or underscore and only contains letters, numbers, and underscores.
+
+</div>
+---
+
+## Date-time validation
+
+<!--
+To ensure correct date and time formatting, use the 'Format' marker.
+This rule enforces RFC 3339 compliance for date-time values.
+-->
+
+<div v-click>
+```yaml
+//+kubebuilder:validation:Format="date-time"
+TimeOfX string `json:"timeOfX"`
+```
+
+A valid value: `"2024-06-03T15:29:48Z"`, invalid: `"2024"`
+
+</div>
+---
+
+## Comparing different fields
+
+<!--
+CEL rules can also compare multiple fields in a resource.
+In this example, 'minReplicas' must always be less than or equal to 'replicas'.
+-->
+<div v-click>
+
+```yaml
+// +kubebuilder:validation:XValidation:rule=self.minReplicas <= self.replicas
+type MyKindSpec struct {
+  Replicas int `json:"replicas"`
+  MinReplicas int `json:"minReplicas"`
+}
+```
+</div>
+
+<div v-click>
+
+This rule enforces that `minReplicas` is always less than or equal to `replicas`.
+
+For more info: https://kubernetes.io/docs/reference/using-api/cel/
+</div>
+
+---
