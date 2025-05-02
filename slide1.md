@@ -939,3 +939,70 @@ For more info: https://kubernetes.io/docs/reference/using-api/cel/
 </div>
 
 ---
+title: Additional Printer Columns and Validation Ratcheting
+---
+
+# Additional Printer Columns
+
+<div v-click>
+
+The `+kubebuilder:printcolumn` marker lets you define extra columns shown when using `kubectl get`. This improves visibility directly from the CLI.
+
+```yaml
+//+kubebuilder:printcolumn:name="Ready",type="boolean",JSONPath=".status.ready",
+description="Indicates whether your resource is in ready state"
+```
+</div>
+<div v-click>
+
+```bash
+$ kubectl get mykinds -A
+
+NAMESPACE   NAME   READY 
+default     sample true   
+```
+</div>
+<!-- Use the print column marker to enhance how users see your custom resource status in the CLI. 
+It's especially helpful for surfacing readiness, state, or summary info directly in the kubectl output. -->
+---
+title: Final Remarks
+---
+
+
+# Final Remarks
+
+<div v-click>
+
+<br/>
+
+# Validation Ratcheting
+
+Kubernetes supports `validation ratcheting` when adding new validations to an existing CRD. 
+This allows updates, as long as the parts of the object that fail validation are not touched by the update.
+</div>
+
+<div v-click>
+
+# Deleting a CustomResourceDefinition
+
+Deleting a CRD removes its REST API and deletes all associated custom objects. 
+Recreating it will start fresh.
+</div>
+
+<div v-click>
+
+# Conclusion
+CRDs let you store and retrieve structured data. 
+That's often enough. But combining a CRD with a controller adds automation. 
+Note that some controllers don’t require new CRDs—they can watch existing Kubernetes resources.
+
+
+</div>
+
+<!-- Validation ratcheting lets you evolve your CRD schemas safely. If old data is invalid under a new schema, updates can still go through as long as the invalid parts aren't changed. This provides schema upgrade safety without breaking users. -->
+
+<!-- Be careful when deleting CRDs. Not only does it remove the API endpoint, it also wipes out all custom objects. Always back up if you need to preserve anything. -->
+
+<!-- CRDs are great for extending Kubernetes, but they’re just the start. Add a controller if you want automation. Also remember, not every controller needs a CRD—many just respond to built-in resources like Pods or ConfigMaps. -->
+
+---
