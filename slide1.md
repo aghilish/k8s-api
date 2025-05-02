@@ -1,6 +1,5 @@
 ---
 transition: slide-left
-layout: two-cols
 ---
 
 # Extending the Kubernetes API
@@ -10,9 +9,7 @@ Kubernetes API is designed to evolve with new use cases.
 </div>
 
 <div v-click>
-
 Two primary methods to extend it:
-
 </div>
 
 <div v-click>
@@ -26,11 +23,7 @@ Two primary methods to extend it:
 **API Aggregation (AA)** - Deploy custom API servers for specialized implementations.
 </div>
 
-::right::
-
 <div v-click>
-<br/>
-
 
 **CRD**:
 </div>
@@ -55,18 +48,28 @@ Two primary methods to extend it:
 - Main API server proxies requests to your custom API server.
 </div>
 
-<div v-click>
-  <br/>
-  <br/>
-  <img src="./assets/k8s-aa.svg" alt="Kubernetes API Aggregation" style="width: 100%;">
-</div>
 <!-- 
-Let us explore how to extend the Kubernetes API to support new use cases. Kubernetes is built to grow, and its API can be extended in two main ways: CustomResourceDefinitions, or CRDs, allow you to declaratively define new custom APIs with your own API group, kind, and schema. This creates new RESTful resource paths without needing a custom API server. Alternatively, API Aggregation, or AA, lets you deploy your own API server for specialized implementations, with the main API server acting as a proxy to forward requests to your custom server. The diagram illustrates how API Aggregation works, showing the main API server proxying requests to a custom API server. 
+Let us explore how to extend the Kubernetes API to support new use cases. Kubernetes is built to grow, and its API can be extended in two main ways: CustomResourceDefinitions, or CRDs, allow you to declaratively define new custom APIs with your own API group, kind, and schema. This creates new RESTful resource paths without needing a custom API server. Alternatively, API Aggregation, or AA, lets you deploy your own API server for specialized implementations, with the main API server acting as a proxy to forward requests to your custom server.
+-->
+---
+transition: slide-left
+---
+
+# API Aggregation
+
+<!-- 
+  This diagram illustrates how API Aggregation works, showing the main API server proxying requests to a custom API server. 
   1. A request to `/apis/mygroup`.
   2. The kube-aggregator, embedded in the kube-apiserver, forwards the request.
   3. The extension API server, registered for `/apis/mygroup/*` and typically running as a pod, handles the request.
   4. The extension API server manages etcd storage if needed.
 -->
+
+<div v-click>
+  <br/>
+  <br/>
+  <img src="./assets/k8s-aa.svg" alt="Kubernetes API Aggregation" style="width: 100%;">
+</div>
 
 ---
 transition: slide-left
@@ -567,7 +570,6 @@ When defining a Kubernetes Custom Resource, you can add a status subresource to 
 
 ---
 transition: slide-left
-layout: two-cols
 ---
 
 # Why Use a Status Subresource?
@@ -587,28 +589,26 @@ Main spec updates don't overwrite status data, and vice versa.
 You can apply RBAC to status separately from spec.
 </div>
 
-::right::
-
 <div v-click>
 
-The <strong>Spec</strong> defines the desired state of the resource.
+- The <strong>Spec</strong> defines the desired state of the resource.
 </div>
 
 <div v-click>
 
-The <strong>Status</strong> reflects the observed state from the controller.
+- The <strong>Status</strong> reflects the observed state from the controller.
 </div>
 
 <div v-click>
 
-Example: In a Cluster wide resource, the admin defines Spec.
-</div>
+<br/>
 
-<div v-click>
+### Example: 
 
+In a Cluster wide resource, the admin defines Spec.
 The controller updates Status to show run history and results.
-</div>
 
+</div>
 <!--
 The status subresource provides a clean separation between user intent and system observation. You can grant different RBAC permissions for reading or updating the status, making it secure and modular. Updates to spec and status don’t interfere with each other, preventing accidental overwrites. In designing a CRD, you should always ask: who defines the Spec, and who updates the Status? For example, in a Cluster wide resource, platform admins define when and how Operation should occur using Spec. The controller then fills in the Status with last run time, success or failure messages.
 -->
