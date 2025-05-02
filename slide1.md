@@ -696,3 +696,90 @@ type CronJob struct {
 <!--
 To enable the status subresource, simply add the kubebuilder marker at the top of your CRD definition. This ensures Kubernetes will treat 'status' as a separate endpoint, letting you manage it independently from the main resource configuration. This is the full root object definition for a CronJob resource, complete with the status subresource enabled. Notice the two kubebuilder markers at the top — one indicates it’s a root object, and the other enables the status subresource. With these in place, Kubernetes knows how to handle your resource in a fully native way.
 -->
+---
+title: Installing the CRD
+---
+
+# Installing the CRD
+
+<div v-click>
+
+Once done defining Spec and Status, just run 
+
+```bash
+make generate
+```
+
+</div>
+
+<div v-click>
+Next run 
+```bash
+make manifests
+```
+</div>
+
+<div v-click>
+
+This will generate the CRD at:
+```bash
+config/crd/bases/app.mycoolcompany.io_mykinds.yaml
+```
+
+Use `kubectl` to apply it to your cluster, or simply use:
+
+```bash
+make install
+```
+
+</div>
+<div v-click>
+Once a CRD is posted, `apiextensions-apiserver` in kube-apiserver validates it. Check the status of the CRD using:
+<div v-click>
+
+```bash
+kubectl get crds mykinds.app.mycoolcompany.io -oyaml
+```
+</div>
+</div>
+<!--
+Voice-over: Now that you've defined the Spec and Status for your Kubernetes Custom Resource, the next step is to run the `make generate` command. This command triggers controller-gen behind the scenes to generate boilerplate code.
+After generating the necessary code, run `make manifests` to produce the CustomResourceDefinition YAML file.
+The generated CRD can be applied to your cluster using `kubectl`, or you can streamline the process by using `make install`.
+When you post a CRD to the cluster, the apiextensions-apiserver validates the request for conflicts and correctness. It then updates the CRD's status field with the result.
+-->
+
+---
+
+# Example output:
+<div v-click>
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mykinds.app.mycoolcompany.io
+...
+status:
+  acceptedNames:
+    kind: MyKind
+    listKind: MyKindList
+    plural: mykinds
+    singular: mykind
+  conditions:
+  - lastTransitionTime: "2025-05-02T08:48:46Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2025-05-02T08:48:46Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1alpha1
+```
+</div>
+<!--
+This YAML output shows that the CRD was successfully validated and established. The status field confirms that there were no conflicts and that the names were accepted.
+-->
