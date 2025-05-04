@@ -25,6 +25,9 @@ Understand how Kubernetes API works and how to interact with it.
   </a>
 </div>
 <!-- 
+Welcome to another video from the Kubernetes API series. In this session, we will dive deep into Extending the Kubernetes API and Focus on Custom Resource Definitions (CRDs).
+-->
+<!-- 
 Welcome to the Kubernetes API Overview presentation. In this session, we will dive deep into Extending the Kubernetes API and Focus on Custom Resource Definitions (CRDs).
 -->
 ---
