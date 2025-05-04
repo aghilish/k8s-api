@@ -74,7 +74,7 @@ transition: slide-left
 ---
 transition: slide-left
 layout: two-cols
-hideInToc: false
+hideInToc: true
 ---
 
 # Choosing CRD or API Aggregation
@@ -259,6 +259,9 @@ Kubebuilder uses Go comments called marker comments to automate CRD generation. 
 -->
 
 ---
+transition: slide-left
+hideInToc: true
+---
 
 # Kubebuilder Key Files
 
@@ -327,6 +330,8 @@ Together, these files form the core of how your CRD behaves and is understood by
 -->
 
 ---
+transition: slide-left
+---
 
 # Defining Spec and Status in a CRD
 
@@ -370,6 +375,8 @@ Now that the CRD scaffolding is ready, it's time to define what the resource act
 -->
 
 ---
+transition: slide-left
+---
 
 # Making Custom Resources Work with client-go
 
@@ -403,6 +410,8 @@ This is handled automatically using a Kubebuilder marker:
 Kubernetes' client-go library expects your CRDs to implement the `runtime.Object` interface. This interface ensures that your objects can be safely encoded, decoded, and copied. Rather than writing that logic yourself, you can use the `+kubebuilder:object:root=true` marker. It signals Kubebuilder to generate those methods for you, including the important DeepCopy function.
 -->
 
+---
+transition: slide-left
 ---
 
 # Choosing Resource Scope
@@ -498,6 +507,7 @@ Let’s look at the CronJob example to understand Spec design in practice. Takin
 -->
 ---
 transition: slide-left
+hideInToc: true
 ---
 
 # Optional Fields and Defaults
@@ -570,6 +580,7 @@ When defining a Kubernetes Custom Resource, you can add a status subresource to 
 
 ---
 transition: slide-left
+hideInToc: true
 ---
 
 # Why Use a Status Subresource?
@@ -615,6 +626,7 @@ The status subresource provides a clean separation between user intent and syste
 
 ---
 transition: slide-left
+hideInToc: true
 ---
 
 # CronJobStatus Structure
@@ -653,6 +665,7 @@ In the CronJob example from the kubebuiler book, the Status struct includes two 
 
 ---
 transition: slide-left
+hideInToc: true
 ---
 
 # Marking the Status Subresource
@@ -750,6 +763,9 @@ When you post a CRD to the cluster, the apiextensions-apiserver validates the re
 -->
 
 ---
+transition: slide-left
+hideInToc: true
+---
 
 # Example output:
 <div v-click>
@@ -786,6 +802,7 @@ This YAML output shows that the CRD was successfully validated and established. 
 
 ---
 title: Common Expression Language (CEL)
+transition: slide-left
 ---
 
 # Common Expression Language (CEL)
@@ -832,6 +849,9 @@ spec.schedule: Invalid value: "string": Value is immutable
 </div>
 
 ---
+hideInToc: true
+transition: slide-left
+---
 
 ## Append-only list
 
@@ -855,6 +875,9 @@ spec.selectors: Invalid value: "array": this list is append only
 </div>
 
 ---
+hideInToc: true
+transition: slide-left
+---
 
 ## Name format validation
 
@@ -877,6 +900,9 @@ Creating an incorrect instance fails:
 
 </div>
 ---
+hideInToc: true
+transition: slide-left
+---
 
 ## Pattern-based string validation
 
@@ -895,6 +921,9 @@ This ensures `description` starts with a letter or underscore and only contains 
 
 </div>
 ---
+hideInToc: true
+transition: slide-left
+---
 
 ## Date-time validation
 
@@ -912,6 +941,9 @@ TimeOfX string `json:"timeOfX"`
 A valid value: `"2024-06-03T15:29:48Z"`, invalid: `"2024"`
 
 </div>
+---
+hideInToc: true
+transition: slide-left
 ---
 
 ## Comparing different fields
@@ -940,6 +972,8 @@ For more info: https://kubernetes.io/docs/reference/using-api/cel/
 
 ---
 title: Additional Printer Columns and Validation Ratcheting
+hideInToc: false
+transition: slide-left
 ---
 
 # Additional Printer Columns
@@ -966,6 +1000,7 @@ default     sample true
 It's especially helpful for surfacing readiness, state, or summary info directly in the kubectl output. -->
 ---
 title: Final Remarks
+transition: slide-left
 ---
 
 
