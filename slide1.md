@@ -20,16 +20,6 @@ Two primary methods to extend it:
 
 <div v-click>
 
-**API Aggregation (AA)** - Deploy custom API servers for specialized implementations.
-</div>
-
-<div v-click>
-
-**CRD**:
-</div>
-
-<div v-click>
-
 - Define API group, kind, and schema.
 </div>
 
@@ -40,7 +30,7 @@ Two primary methods to extend it:
 
 <div v-click>
 
-**AA**:
+**API Aggregation (AA)** - Deploy custom API servers for specialized implementations.
 </div>
 
 <div v-click>
@@ -57,6 +47,12 @@ transition: slide-left
 
 # API Aggregation
 
+<div v-click>
+  <br/>
+  <br/>
+  <img src="./assets/k8s-aa.svg" alt="Kubernetes API Aggregation" style="width: 100%;">
+</div>
+
 <!-- 
   This diagram illustrates how API Aggregation works, showing the main API server proxying requests to a custom API server. 
   1. A request to `/apis/mygroup`.
@@ -64,13 +60,6 @@ transition: slide-left
   3. The extension API server, registered for `/apis/mygroup/*` and typically running as a pod, handles the request.
   4. The extension API server manages etcd storage if needed.
 -->
-
-<div v-click>
-  <br/>
-  <br/>
-  <img src="./assets/k8s-aa.svg" alt="Kubernetes API Aggregation" style="width: 100%;">
-</div>
-
 ---
 transition: slide-left
 layout: two-cols
@@ -807,12 +796,6 @@ transition: slide-left
 
 # Common Expression Language (CEL)
 
-<!--
-Let us now introduce the Common Expression Language, or CEL.
-It's a powerful feature that lets you write validation rules directly inside your Kubernetes CustomResourceDefinitions.
-Since Kubernetes v1.25, CEL support is available in beta and lets you express constraints clearly and declaratively.
-Marker `//+kubebuilder:validation:XValidation:rule` can be used for this scope.
--->
 
 <div v-click>
 
@@ -822,16 +805,18 @@ Marker `//+kubebuilder:validation:XValidation:rule` can be used for this scope.
 
 </div>
 
+
+<!--
+Let us now introduce the Common Expression Language, or CEL.
+It's a powerful feature that lets you write validation rules directly inside your Kubernetes CustomResourceDefinitions.
+Since Kubernetes v1.25, CEL support is available in beta and lets you express constraints clearly and declaratively.
+Marker `//+kubebuilder:validation:XValidation:rule` can be used for this scope.
+-->
 ---
 
 ## Immutability
 
-<!--
-Here is an example on how to make a field immutable using CEL.
-The validation rule ensures the value of 'Schedule' doesn't change after creation.
-If it does, the update is rejected with a clear error message.
-self refers to the current object, while oldSelf refers to the previous version.
--->
+
 
 <div v-click>
 
@@ -847,7 +832,12 @@ spec.schedule: Invalid value: "string": Value is immutable
 ```
 
 </div>
-
+<!--
+Here is an example on how to make a field immutable using CEL.
+The validation rule ensures the value of 'Schedule' doesn't change after creation.
+If it does, the update is rejected with a clear error message.
+self refers to the current object, while oldSelf refers to the previous version.
+-->
 ---
 hideInToc: true
 transition: slide-left
@@ -855,10 +845,7 @@ transition: slide-left
 
 ## Append-only list
 
-<!--
-Here we can define a sample Selectors list that can only grow.
-The rule checks that the new list size is not smaller than the old one, enforcing append-only behavior.
--->
+
 
 
 <div v-click>
@@ -873,7 +860,10 @@ Any update reducing that list would fail:
 spec.selectors: Invalid value: "array": this list is append only
 ```
 </div>
-
+<!--
+Here we can define a sample Selectors list that can only grow.
+The rule checks that the new list size is not smaller than the old one, enforcing append-only behavior.
+-->
 ---
 hideInToc: true
 transition: slide-left
@@ -881,10 +871,6 @@ transition: slide-left
 
 ## Name format validation
 
-<!--
-Let us look at a simple example of validating the name format using CEL rules.
-The rule enforces that resource names must start with a specific prefix.
--->
 
 <div v-click>
 
@@ -899,6 +885,11 @@ Creating an incorrect instance fails:
 ```
 
 </div>
+<!--
+Let us look at a simple example of validating the name format using CEL rules.
+The rule enforces that resource names must start with a specific prefix.
+-->
+
 ---
 hideInToc: true
 transition: slide-left
@@ -906,10 +897,7 @@ transition: slide-left
 
 ## Pattern-based string validation
 
-<!--
-You can also validate field content using regex patterns.
-This rule ensures that the 'description' field follows a naming convention: starts with a letter or underscore and only includes valid characters.
--->
+
 <div v-click>
 
 ```yaml
@@ -920,6 +908,10 @@ Description string `json:"description"`
 This ensures `description` starts with a letter or underscore and only contains letters, numbers, and underscores.
 
 </div>
+<!--
+You can also validate field content using regex patterns.
+This rule ensures that the 'description' field follows a naming convention: starts with a letter or underscore and only includes valid characters.
+-->
 ---
 hideInToc: true
 transition: slide-left
@@ -927,10 +919,7 @@ transition: slide-left
 
 ## Date-time validation
 
-<!--
-To ensure correct date and time formatting, use the 'Format' marker.
-This rule enforces RFC 3339 compliance for date-time values.
--->
+
 
 <div v-click>
 ```yaml
@@ -941,6 +930,10 @@ TimeOfX string `json:"timeOfX"`
 A valid value: `"2024-06-03T15:29:48Z"`, invalid: `"2024"`
 
 </div>
+<!--
+To ensure correct date and time formatting, use the 'Format' marker.
+This rule enforces RFC 3339 compliance for date-time values.
+-->
 ---
 hideInToc: true
 transition: slide-left
@@ -948,10 +941,7 @@ transition: slide-left
 
 ## Comparing different fields
 
-<!--
-CEL rules can also compare multiple fields in a resource.
-In this example, 'minReplicas' must always be less than or equal to 'replicas'.
--->
+
 <div v-click>
 
 ```yaml
@@ -969,7 +959,10 @@ This rule enforces that `minReplicas` is always less than or equal to `replicas`
 
 For more info: https://kubernetes.io/docs/reference/using-api/cel/
 </div>
-
+<!--
+CEL rules can also compare multiple fields in a resource.
+In this example, 'minReplicas' must always be less than or equal to 'replicas'.
+-->
 ---
 title: Additional Printer Columns and Validation Ratcheting
 hideInToc: false
@@ -1034,10 +1027,10 @@ Note that some controllers don’t require new CRDs—they can watch existing Ku
 
 </div>
 
-<!-- Validation ratcheting lets you evolve your CRD schemas safely. If old data is invalid under a new schema, updates can still go through as long as the invalid parts aren't changed. This provides schema upgrade safety without breaking users. -->
-
-<!-- Be careful when deleting CRDs. Not only does it remove the API endpoint, it also wipes out all custom objects. Always back up if you need to preserve anything. -->
-
-<!-- CRDs are great for extending Kubernetes, but they’re just the start. Add a controller if you want automation. Also remember, not every controller needs a CRD—many just respond to built-in resources like Pods or ConfigMaps. -->
+<!-- 
+Validation ratcheting lets you evolve your CRD schemas safely. If old data is invalid under a new schema, updates can still go through as long as the invalid parts aren't changed. This provides schema upgrade safety without breaking users. 
+Be careful when deleting CRDs. Not only does it remove the API endpoint, it also wipes out all custom objects. Always back up if you need to preserve anything.
+CRDs are great for extending Kubernetes, but they’re just the start. Add a controller if you want automation. Also remember, not every controller needs a CRD—many just respond to built-in resources like Pods or ConfigMaps.
+-->
 
 ---
