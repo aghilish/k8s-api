@@ -1032,5 +1032,16 @@ Validation ratcheting lets you evolve your CRD schemas safely. If old data is in
 Be careful when deleting CRDs. Not only does it remove the API endpoint, it also wipes out all custom objects. Always back up if you need to preserve anything.
 CRDs are great for extending Kubernetes, but they’re just the start. Add a controller if you want automation. Also remember, not every controller needs a CRD—many just respond to built-in resources like Pods or ConfigMaps.
 -->
-
 ---
+layout: center
+---
+
+# Hands-on Lab
+<Youtube id="J7DkI3DLbi8" />
+[Killercoda Lab](https://killercoda.com/aghilish/scenario/crds_kubebuilder) .
+
+<!--
+Now that we've covered the concepts, it's time to put them into practice. Head over to the hands-on lab video to follow along and try things out yourself. You can access the Killercoda environment using the link provided. Thank you and see you in the lab!
+-->
+
+
