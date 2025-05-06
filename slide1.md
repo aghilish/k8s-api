@@ -418,7 +418,7 @@ If the resource should apply across the whole cluster, use:
 <div v-click>
 
 ```go
-// +kubebuilder:resource:path=cleaners,scope=Cluster
+// +kubebuilder:resource:path=mykinds,scope=Cluster
 ```
 
 </div>
@@ -431,7 +431,7 @@ If it should apply only within a namespace, use:
 <div v-click>
 
 ```go
-// +kubebuilder:resource:path=cleaners,scope=Namespaced
+// +kubebuilder:resource:path=mykinds,scope=Namespaced
 ```
 </div>
 
